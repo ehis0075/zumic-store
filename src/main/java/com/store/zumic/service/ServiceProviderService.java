@@ -3,6 +3,7 @@ package com.store.zumic.service;
 
 
 
+import com.store.zumic.dto.AddMealRequest;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Meal;
 import com.store.zumic.models.ServiceProvider;
@@ -16,6 +17,6 @@ public interface ServiceProviderService {
 
     List<?> getAllServiceProviders(City city);
 
-    void addFood(Meal meal, String nameOfRestaurant);
+    void addFood(AddMealRequest addMealRequest);
 }
 

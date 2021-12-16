@@ -30,9 +30,9 @@ public class Meal {
 
     //add category: breakfast, lunch, dinner
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "meal_id", referencedColumnName = "id")
-    private List<ServiceProvider> serviceProviders;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "serviceProvider", referencedColumnName = "name")
+    private ServiceProvider serviceProvider;
 
     @OneToMany
     private List<CustomerOrder> customerOrders;

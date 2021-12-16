@@ -1,6 +1,7 @@
 package com.store.zumic.controller;
 
 
+import com.store.zumic.dto.AddMealRequest;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Meal;
 import com.store.zumic.models.ServiceProvider;
@@ -37,10 +38,10 @@ public class ServiceProviderController {
     }
 
     @PostMapping("/add_meal")
-    ResponseEntity<?> addMeal(@RequestBody Meal meal, String nameOfRestaurant){
+    ResponseEntity<?> addMeal(@RequestBody AddMealRequest addMealRequest){
 
         try {
-            serviceProviderService.addFood(meal, nameOfRestaurant);
+            serviceProviderService.addFood(addMealRequest);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getLocalizedMessage());
         }

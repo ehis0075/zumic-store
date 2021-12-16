@@ -2,7 +2,7 @@ package com.store.zumic.controller;
 
 
 
-import com.store.zumic.dto.RegistrationDto;
+import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping("/registration")
-    ResponseEntity<?> registration(@RequestBody RegistrationDto registrationDto ){
+    ResponseEntity<?> registration(@RequestBody CustomerRegistrationDto registrationDto ){
 
         try {
             customerService.create_account(registrationDto);

@@ -28,7 +28,8 @@ public class ServiceProvider {
 
     private City city;
 
-    @OneToMany(mappedBy = "serviceProviders")
+    @OneToMany(mappedBy = "serviceProvider")
+    //@JoinColumn(name = "listOfMeals", referencedColumnName = "id")
     private List<Meal> listOfMeals;
 
 }

@@ -1,6 +1,7 @@
 package com.store.zumic.service;
 
 
+import com.store.zumic.dto.AddMealRequest;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Meal;
 import com.store.zumic.models.ServiceProvider;
@@ -55,17 +56,17 @@ public class ServiceProviderImpl implements ServiceProviderService {
     }
 
     @Override
-    public void addFood(Meal meal, String nameOfRestaurant) {
+    public void addFood(AddMealRequest addMealRequest) {
 
-        log.info("add food request --> {}, {}", meal, nameOfRestaurant);
+        log.info("add food request --> {}, {}", addMealRequest);
 
-        ServiceProvider serviceProvider = serviceProviderRepository.findByName(nameOfRestaurant);
+        ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getNameOfRestaurant());
 
         if(serviceProvider != null){
             Meal meal1 = new Meal();
-            meal1.setDescription(meal.getDescription());
-            meal1.setDescription(meal.getDescription());
-            meal1.setPrice(meal.getPrice());
+            meal1.setDescription(addMealRequest.getDescription());
+            meal1.setDescription(addMealRequest.getDescription());
+            meal1.setPrice(addMealRequest.getPrice());
 
             mealRepository.save(meal1);
 

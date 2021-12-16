@@ -1,7 +1,7 @@
 package com.store.zumic.service;
 
 
-import com.store.zumic.dto.RegistrationDto;
+import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.models.Customer;
 import com.store.zumic.repository.CustomerRepository;
 import com.store.zumic.service.exception.CustomerAlreadyExistException;
@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService{
     CustomerRepository customerRepository;
 
     @Override
-    public void create_account(RegistrationDto registrationDto) throws CustomerAlreadyExistException {
+    public void create_account(CustomerRegistrationDto registrationDto) throws CustomerAlreadyExistException {
 
         log.info("Registration dto --->{}", registrationDto);
 
