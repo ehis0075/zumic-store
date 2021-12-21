@@ -39,7 +39,7 @@ public class ServiceProvider implements Serializable {
     //@JoinColumn(referencedColumnName = "id")
     private List<Meal> listOfMeals;
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     public void addMeal(Meal meal){
         if(listOfMeals == null){
             listOfMeals = new ArrayList<>();
