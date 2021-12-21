@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,21 +16,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CustomerOrder {
+public class CustomerOrder implements Serializable {
+
+    private static final long serialVersionUID = 4879999367737L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    private Address address;
+    private String address;
+
+    private City city;
 
     @NotNull
     @Column(unique = true)
     private String phoneNumber;
-
-    @NotNull
-    private String password;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "meal_id", referencedColumnName = "id")

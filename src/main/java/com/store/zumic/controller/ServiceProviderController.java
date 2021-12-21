@@ -49,10 +49,10 @@ public class ServiceProviderController {
     }
 
     @PostMapping("/find_ServiceProvider/{city}")
-    ResponseEntity<?> find(@PathVariable City city){ //String city
+    ResponseEntity<?> find(@PathVariable String city){
 
         try {
-            serviceProviderService.getAllServiceProviders(city);
+            serviceProviderService.getAServiceProvider(city);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getLocalizedMessage());
         }

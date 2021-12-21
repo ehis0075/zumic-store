@@ -16,6 +16,8 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 
     boolean existsByCity(City city); // String city
 
-    List<?> findByCity(City city);
+    //List<?> findByCity(City city);
+
+    ServiceProvider findByCity(City city);
 
 }

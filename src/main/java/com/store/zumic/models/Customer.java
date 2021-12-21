@@ -3,8 +3,11 @@ package com.store.zumic.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
@@ -12,7 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Customer {
+public class Customer implements Serializable {
+
+    private static final long serialVersionUID = 23444536367737L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +36,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
     private List<CustomerOrder> orders;
+
+    @CreationTimestamp
+    private Date dateCreated;
 }

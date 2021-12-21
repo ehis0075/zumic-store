@@ -4,15 +4,20 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Meal {
+public class Meal implements Serializable {
+
+    private static final long serialVersionUID = 4353636567787L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +35,14 @@ public class Meal {
 
     //add category: breakfast, lunch, dinner
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "serviceProvider", referencedColumnName = "name")
-    private ServiceProvider serviceProvider;
+//    @ManyToOne(optional = false)
+//    @JoinColumn(name = "serviceProviderId", nullable = false, updatable = false)
+//    private ServiceProvider serviceProvider;
 
     @OneToMany
     private List<CustomerOrder> customerOrders;
+
+    @CreationTimestamp
+    private Date dateCreated;
 
 }

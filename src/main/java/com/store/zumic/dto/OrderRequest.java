@@ -2,12 +2,15 @@ package com.store.zumic.dto;
 
 
 
+import com.store.zumic.models.City;
 import com.store.zumic.models.Meal;
 import com.store.zumic.models.ServiceProvider;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.OneToOne;
 
 @Data
@@ -15,10 +18,14 @@ import javax.persistence.OneToOne;
 @AllArgsConstructor
 public class OrderRequest {
 
-    @OneToOne
-    private Meal meal;
+    private String meal;
 
-    @OneToOne
-    private ServiceProvider serviceProvider;
+    private String address;
+
+    private City city;
+
+    private String phoneNumber;
+
+    private String serviceProviderName;
 
 }

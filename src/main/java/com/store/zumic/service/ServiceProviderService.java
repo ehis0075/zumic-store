@@ -15,7 +15,7 @@ public interface ServiceProviderService {
 
     void create(ServiceProvider serviceProvider) throws ServiceProviderAlreadyExistException;
 
-    List<?> getAllServiceProviders(City city);
+    ServiceProvider getAServiceProvider(String city);
 
     void addFood(AddMealRequest addMealRequest);
 }

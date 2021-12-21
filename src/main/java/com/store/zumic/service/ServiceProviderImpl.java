@@ -51,8 +51,10 @@ public class ServiceProviderImpl implements ServiceProviderService {
     }
 
     @Override
-    public List<?> getAllServiceProviders(City city) {
-        return serviceProviderRepository.findByCity(city);
+    public ServiceProvider getAServiceProvider(String city) {
+
+        City newCity = City.valueOf("city");
+        return serviceProviderRepository.findByCity(newCity);
     }
 
     @Override
@@ -60,24 +62,29 @@ public class ServiceProviderImpl implements ServiceProviderService {
 
         log.info("add food request --> {}, {}", addMealRequest);
 
-        ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getNameOfRestaurant());
+        //ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getNameOfRestaurant());
+        ServiceProvider serviceProvider = serviceProviderRepository.getById(addMealRequest.getServiceProviderId());
+        log.info("service provider from db ----->{}", serviceProvider);
 
         if(serviceProvider != null){
             Meal meal1 = new Meal();
             meal1.setDescription(addMealRequest.getDescription());
-            meal1.setDescription(addMealRequest.getDescription());
+            meal1.setName(addMealRequest.getName());
+            meal1.setPreparationTime(addMealRequest.getPreparationTime());
             meal1.setPrice(addMealRequest.getPrice());
 
             mealRepository.save(meal1);
 
-            log.info("saved meal --> {}, {}", meal1);
+            log.info("saved meal --> {}", meal1);
 
-            List<Meal> meals = new ArrayList<>();
-            meals.add(meal1);
+            //mapping meal to a service provider
+            log.info("<--------- adding meal to list of meals -------->");
+            log.info("list of meals from the service provider  ---->{}", serviceProvider.getListOfMeals());
+//            List<Meal> meals = new ArrayList<>();
+//            meals.addMeal(meal1);
 
             //map the new created new to a service provider in the db
-            serviceProvider.setListOfMeals(meals);
-            log.info("list of meals --> {}, {}", meals);
+            serviceProvider.addMeal(meal1);
 
         }
 
