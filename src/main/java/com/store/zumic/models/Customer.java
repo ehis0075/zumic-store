@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Customer implements Serializable {
 
     private String lastName;
 
+    @NotNull
     @Column(unique = true)
     private String email;
 

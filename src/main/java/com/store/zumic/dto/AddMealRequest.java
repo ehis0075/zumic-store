@@ -18,6 +18,6 @@ public class AddMealRequest {
 
     private String description;
 
-    private Long serviceProviderId;
+    private String serviceProviderName;
 
 }
