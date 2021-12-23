@@ -4,6 +4,7 @@ package com.store.zumic.service;
 import com.store.zumic.dto.AddMealRequest;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Meal;
+import com.store.zumic.models.Role;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.repository.MealRepository;
 import com.store.zumic.repository.ServiceProviderRepository;
@@ -28,9 +29,9 @@ public class ServiceProviderImpl implements ServiceProviderService {
     MealRepository mealRepository;
 
     @Override
-    public void create(ServiceProvider serviceProvider) throws ServiceProviderAlreadyExistException {
+    public void create(ServiceProvider serviceProvider) throws IllegalArgumentException {
 
-        log.info("Before saving customer info --> {}", serviceProvider);
+        log.info("service provider registration request --> {}", serviceProvider);
 
         ServiceProvider serviceProvider2 = serviceProviderRepository.findByName(serviceProvider.getName());
 
@@ -43,22 +44,16 @@ public class ServiceProviderImpl implements ServiceProviderService {
             serviceProvider1.setAddress(serviceProvider.getAddress());
             serviceProvider1.setPhoneNumber(serviceProvider.getPhoneNumber());
             serviceProvider1.setCity(serviceProvider.getCity());
+            serviceProvider1.setRole(Role.valueOf("SERVICE_PROVIDER"));
 
             serviceProviderRepository.save(serviceProvider1);
 
-            log.info("After saving customer saved ---> {}", serviceProvider1);
+            log.info("After saving to database ---> {}", serviceProvider1);
 
         } else {
-            throw new ServiceProviderAlreadyExistException("service provider with the name" +serviceProvider2.getName()+ "or email "+ serviceProvider2.getEmail() +" already exist");
+            throw new IllegalArgumentException("service provider with the name " +serviceProvider2.getName()+ " or email "+ serviceProvider2.getEmail() +" already exist");
         }
 
-    }
-
-    @Override
-    public ServiceProvider getAServiceProvider(String city) {
-
-        City newCity = City.valueOf("city");
-        return serviceProviderRepository.findByCity(newCity);
     }
 
     @Override

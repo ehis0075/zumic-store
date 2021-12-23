@@ -1,17 +1,19 @@
 This is a web application that allows customers place order from their fav restaurant 
 
-what a service provider can do:
+ API
+what a service provider can do: 
 - create account
 - update profile
 - add meal
 - delete a meal
 - edit a meal
-- send notifications to all my customers
+- send push notifications to all my customers
 
 what a customer can do on the platform:
 - create account
 - update profile
 - place order
+- pay with paystack link
 - find all the service providers in a city
 
 

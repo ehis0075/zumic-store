@@ -6,8 +6,7 @@ import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.service.CustomerService;
-import com.store.zumic.service.exception.ResourceNotFoundException;
-import com.store.zumic.service.exception.ServiceProviderNotFoundException;
+import com.store.zumic.service.exception.CustomerAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,11 +26,11 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping("/registration")
-    ResponseEntity<?> registration(@RequestBody CustomerRegistrationDto registrationDto ){
+    ResponseEntity<?> registration(@RequestBody CustomerRegistrationDto registrationDto){
 
         try {
             customerService.create_account(registrationDto);
-        } catch (Exception e) {
+        } catch (CustomerAlreadyExistException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return ResponseEntity.ok().body("registration successful");
@@ -54,8 +53,9 @@ public class CustomerController {
         List<ServiceProvider>  serviceProviderList;
         try {
             serviceProviderList = customerService.findAllServiceProvidersByCity(city);
-        } catch (ResourceNotFoundException e)  {
-            return ResponseEntity.badRequest().body("No service provider found in ");
+        } catch (IllegalArgumentException e)  {
+           // return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No service provider found in "+ city);
         }
 //        }catch (Exception e) {
 //                return ResponseEntity.badRequest().body(e.getLocalizedMessage());

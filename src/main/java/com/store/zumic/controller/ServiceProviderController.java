@@ -7,6 +7,7 @@ import com.store.zumic.models.Meal;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.service.ServiceProviderService;
 //import lombok.RequiredArgsConstructor;
+import com.store.zumic.service.exception.ServiceProviderAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,12 @@ public class ServiceProviderController {
     @Autowired
     ServiceProviderService serviceProviderService;
 
-
     @PostMapping("/create_account")
     public ResponseEntity<?> registration(@RequestBody ServiceProvider serviceProvider){
 
         try {
             serviceProviderService.create(serviceProvider);
-        } catch (Exception e) {
+        } catch (ServiceProviderAlreadyExistException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return ResponseEntity.ok().body("registration successful");

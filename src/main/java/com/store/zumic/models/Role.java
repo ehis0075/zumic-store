@@ -2,5 +2,5 @@ package com.store.zumic.models;
 
 public enum Role {
 
-    SERVICEPROVIDER, USER
+    SERVICE_PROVIDER, CUSTOMER
 }

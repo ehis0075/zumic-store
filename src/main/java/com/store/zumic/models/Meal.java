@@ -45,4 +45,10 @@ public class Meal implements Serializable {
     @CreationTimestamp
     private Date dateCreated;
 
+    public Meal(String name, double price, String preparationTime, String description) {
+        this.name = name;
+        this.price = price;
+        this.preparationTime = preparationTime;
+        this.description = description;
+    }
 }

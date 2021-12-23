@@ -20,4 +20,9 @@ public interface CustomerService {
 
     List<ServiceProvider> findAllServiceProvidersByCity(String city) throws ServiceProviderNotFoundException;
 
+    //get All my orders
+
+    //reset password
+
+    //
 }

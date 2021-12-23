@@ -5,14 +5,13 @@ import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Customer;
+import com.store.zumic.models.Role;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.repository.CustomerRepository;
 import com.store.zumic.repository.ServiceProviderRepository;
 import com.store.zumic.service.exception.CustomerAlreadyExistException;
 import com.store.zumic.service.exception.CustomerDoesNotExistException;
-import com.store.zumic.service.exception.ResourceNotFoundException;
 import com.store.zumic.service.exception.ServiceProviderNotFoundException;
-import com.store.zumic.utils.CityType;
 import com.store.zumic.utils.ConvertStringToEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void create_account(CustomerRegistrationDto registrationDto) throws CustomerAlreadyExistException {
 
-        log.info("Registration dto --->{}", registrationDto);
+        log.info("Customer registration request ---> {}", registrationDto);
 
         Customer savedCustomer = customerRepository.findByEmail(registrationDto.getEmail());
 
@@ -46,16 +45,17 @@ public class CustomerServiceImpl implements CustomerService{
             customer.setLastName(registrationDto.getLastName());
             customer.setEmail(registrationDto.getEmail());
             customer.setPassword(registrationDto.getPassword());
+            customer.setRole(Role.valueOf("CUSTOMER"));
 
             customerRepository.save(customer);
 
-            log.info("After saving Registration details to db --->{}", customer);
+            log.info("After saving customer details to db --->{}", customer);
 
             //send verification token to email
 
 
         } else {
-            throw new CustomerAlreadyExistException("a customer with email "+ registrationDto.getEmail() +" already exist");
+            throw new CustomerAlreadyExistException("a customer with email "+ registrationDto.getEmail() +" already exist!");
         }
 
     }
@@ -87,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<ServiceProvider> findAllServiceProvidersByCity(String city) throws ResourceNotFoundException {
+    public List<ServiceProvider> findAllServiceProvidersByCity(String city) throws ServiceProviderNotFoundException {
 
         log.info("getting all service providers in "+ city);
         City newCity = ConvertStringToEnum.convertStringToEnum(city); //issue
@@ -102,9 +102,12 @@ public class CustomerServiceImpl implements CustomerService{
 //        if(serviceProviderList == null){
 //            throw new ServiceProviderNotFoundException("No service providers found in  "+ city);
 //        }
-        if(serviceProviderList == null){
-            throw new ResourceNotFoundException("No service providers found in  "+ city);
+        if(serviceProviderList != null){
+            return serviceProviderList;
+            //throw new ResourceNotFoundException("No service provider found in "+ city);
+        } else {
+          throw new ServiceProviderNotFoundException("No service provider found in "+ city);
         }
-        return serviceProviderList;
+//        return serviceProviderList;
     }
 }

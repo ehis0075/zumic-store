@@ -35,6 +35,8 @@ public class Customer implements Serializable {
     //@NotNull
     private String password;
 
+    private Role role;
+
     private boolean isVerified = false;
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)

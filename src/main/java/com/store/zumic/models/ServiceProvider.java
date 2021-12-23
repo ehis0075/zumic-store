@@ -38,6 +38,8 @@ public class ServiceProvider implements Serializable {
 
     private String phoneNumber;
 
+    private Role role;
+
     @Convert(converter = CityJpaConverter.class)
     private City city;
 

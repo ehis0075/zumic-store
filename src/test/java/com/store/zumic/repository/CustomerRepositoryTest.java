@@ -84,8 +84,6 @@ class CustomerRepositoryTest {
         savedCustomer.setFirstName("ehis");
         savedCustomer.setLastName("jude");
 
-        //customerRepository.save(savedCustomer);
-
         assertAll(
                 () ->  assertEquals("ehis", savedCustomer.getFirstName()),
                 () ->  assertEquals("jude", savedCustomer.getLastName())

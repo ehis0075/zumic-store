@@ -22,7 +22,6 @@ class ServiceProviderRepositoryTest {
     @Autowired
     ServiceProviderRepository serviceProviderRepository;
 
-
     private ServiceProvider serviceProvider;
 
     private ServiceProvider serviceProvider1;
