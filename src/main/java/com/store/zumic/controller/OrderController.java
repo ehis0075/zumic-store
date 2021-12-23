@@ -22,7 +22,7 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @PostMapping("/place_order")
+    @PostMapping("/place-order")
     ResponseEntity<?> placeOrder(@RequestBody OrderRequest orderRequest ){
 
         try {

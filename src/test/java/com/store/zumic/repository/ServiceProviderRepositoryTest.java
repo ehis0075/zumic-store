@@ -38,7 +38,7 @@ class ServiceProviderRepositoryTest {
 
     }
 
-    @BeforeEach
+    @Test
     @DisplayName("be able to create an account")
     void canCreateAnAccount() {
         log.info("registration ..............");
@@ -70,7 +70,8 @@ class ServiceProviderRepositoryTest {
 
         Throwable error =
         assertThrows(ResponseStatusException.class, () ->   serviceProvider1.setEmail("jjocha@gmail.com"));
-        assertEquals("service provider with the name " +serviceProvider1.getName()+ " or email" +serviceProvider1.getEmail()+ " already exist", error.getMessage());
+
+        assertEquals("service provider with the name Mr Cabs place or email jjocha@gmail.com already exist", error.getMessage());
         return error;
     }
 

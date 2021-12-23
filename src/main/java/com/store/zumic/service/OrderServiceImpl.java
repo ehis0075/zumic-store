@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void placeOrder(OrderRequest orderRequest) {
 
-        log.info("Order request  --> {}", orderRequest);
+        log.info("Order request--> {} "+ orderRequest);  //add the customer making this order
 
         Meal meal = mealRepository.findByName(orderRequest.getMeal());
 
@@ -46,6 +46,7 @@ public class OrderServiceImpl implements OrderService{
         if(serviceProviderRepository.existsByCity(serviceProvider1.getCity())) {
             CustomerOrder order = new CustomerOrder();
 
+            order.setPhoneNumber(orderRequest.getPhoneNumber());
             order.setServiceProvider(serviceProvider1);
             order.setAddress(orderRequest.getAddress());
             order.setCity(orderRequest.getCity());

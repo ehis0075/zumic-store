@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+import com.store.zumic.utils.CityJpaConverter;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class ServiceProvider implements Serializable {
 
     private String phoneNumber;
 
+    @Convert(converter = CityJpaConverter.class)
     private City city;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

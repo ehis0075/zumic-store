@@ -22,4 +22,6 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 
     ServiceProvider findByCity(City city);
 
+    List<ServiceProvider> findAllByCity(City city);
+
 }

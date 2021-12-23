@@ -48,16 +48,16 @@ public class ServiceProviderController {
         return ResponseEntity.ok().body("meal was successfully added");
     }
 
-    @PostMapping("/find_ServiceProvider/{city}")
-    ResponseEntity<?> find(@PathVariable String city){
-
-        try {
-            serviceProviderService.getAServiceProvider(city);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
-        }
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/find_ServiceProvider/{city}")
+//    ResponseEntity<?> find(@PathVariable String city){
+//
+//        try {
+//            serviceProviderService.getAServiceProvider(city);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
+//        }
+//        return ResponseEntity.ok().build();
+//    }
 
 
 

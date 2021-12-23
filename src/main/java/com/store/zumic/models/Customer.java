@@ -32,12 +32,13 @@ public class Customer implements Serializable {
     @Column(unique = true)
     private String email;
 
+    //@NotNull
     private String password;
 
     private boolean isVerified = false;
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
-    private List<CustomerOrder> orders;
+    private List<CustomerOrder> listOfOrders;
 
     @CreationTimestamp
     private Date dateCreated;

@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 public class CustomerOrder implements Serializable {
 
-    private static final long serialVersionUID = 4879999367737L;
+    private static final long serialVersionUID = 47890999367737L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
