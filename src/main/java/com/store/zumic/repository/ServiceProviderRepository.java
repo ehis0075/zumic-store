@@ -10,6 +10,10 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 
     ServiceProvider findByEmail(String email);
 
+    ServiceProvider findByEmailAndName(String email, String name);
+
+    ServiceProvider findByEmailOrName(String email, String name);
+
     ServiceProvider findByName(String serviceProviderName);
 
     boolean existsByName(String serviceProviderName);
@@ -18,7 +22,6 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 
     boolean existsByCity(City city); // String city
 
-    //List<?> findByCity(City city);
 
     ServiceProvider findByCity(City city);
 

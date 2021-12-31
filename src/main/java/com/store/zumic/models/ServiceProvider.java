@@ -1,14 +1,12 @@
 package com.store.zumic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.zumic.utils.CityJpaConverter;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,22 +26,30 @@ public class ServiceProvider implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+//    @Column(unique = true)
     private String name;
 
     @NotNull
-    @Column(unique = true)
+//    @Column(unique = true)
     private String email;
 
     private String address;
 
     private String phoneNumber;
 
-    private Role role;
+    @NotNull
+    private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    @JsonIgnore
+    private AppUser appUser;
 
     @Convert(converter = CityJpaConverter.class)
     private City city;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     //@LazyCollection(LazyCollectionOption.EXTRA)
     //@JoinColumn(referencedColumnName = "id")
     private List<Meal> listOfMeals;

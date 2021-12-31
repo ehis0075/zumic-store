@@ -3,23 +3,36 @@ This is a web application that allows customers place order from their fav resta
  API
 what a service provider can do: 
 - create account
-- update profile
+- login
 - add meal
+
+- verify customer
+- update profile
 - delete a meal
 - edit a meal
 - send push notifications to all my customers
+- get all customers info that has ordered from me
 
 what a customer can do on the platform:
 - create account
+- login
 - update profile
-- place order
-- pay with paystack link
 - find all the service providers in a city
+- place order *
+
+- verify customer
+- pay with paystack 
+
 
 
 to do
 - service provider can be in diff cities
 - find all service providers in a city, you are passing a string
+- add a type of food created by service provider
+- add a order status
+- create a cart class, add order to cart 
+- no customer_order and order mapping in db
+- for the update api, use path param for the email 
 
 LocalDateTime localDateTime = "12/23/2021"
 localDateTime = LocalDateTime.parse(dateTime.toUpperCase()),

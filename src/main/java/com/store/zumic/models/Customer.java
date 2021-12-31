@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,19 +31,40 @@ public class Customer implements Serializable {
     private String lastName;
 
     @NotNull
-    @Column(unique = true)
+    //@Column(unique = true)
     private String email;
 
-    //@NotNull
+    @NotNull
     private String password;
 
-    private Role role;
+    @Enumerated(value = EnumType.STRING)
+    @ElementCollection
+    private List<Role> roles;
 
-    private boolean isVerified = false;
-
-    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<CustomerOrder> listOfOrders;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    @JsonIgnore
+    private AppUser appUser;
 
     @CreationTimestamp
     private Date dateCreated;
+
+    public void addOrder(CustomerOrder order){
+
+        if (listOfOrders == null){
+            this.listOfOrders = new ArrayList<>();
+        }
+        this.listOfOrders.add(order);
+    }
+
+    public void addRole(Role userRole){
+
+        if (roles == null){
+            this.roles = new ArrayList<>();
+        }
+        this.roles.add(userRole);
+    }
 }

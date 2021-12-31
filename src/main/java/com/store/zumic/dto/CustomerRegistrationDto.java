@@ -1,6 +1,7 @@
 package com.store.zumic.dto;
 
 
+import com.store.zumic.models.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,6 @@ public class CustomerRegistrationDto {
     private String email;
 
     private String password;
+
+    private AppUser appUser;
 }

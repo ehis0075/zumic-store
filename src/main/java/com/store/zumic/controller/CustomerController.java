@@ -4,6 +4,7 @@ package com.store.zumic.controller;
 
 import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
+import com.store.zumic.models.Customer;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.service.CustomerService;
 import com.store.zumic.service.exception.CustomerAlreadyExistException;
@@ -26,7 +27,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping("/registration")
-    ResponseEntity<?> registration(@RequestBody CustomerRegistrationDto registrationDto){
+    ResponseEntity<?> registration(@RequestBody Customer registrationDto){
 
         try {
             customerService.create_account(registrationDto);
@@ -34,6 +35,17 @@ public class CustomerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return ResponseEntity.ok().body("registration successful");
+    }
+
+    @GetMapping("/auth/login")
+    public ResponseEntity<Customer> getLoggedInUser(){
+
+        log.info("Get logged in user called");
+        Customer customer = customerService.getLoggedInUser();
+
+        log.info("Object found --> {}", customer);
+        return ResponseEntity.ok().body(customer);
+
     }
 
     @PostMapping("/update-profile")

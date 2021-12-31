@@ -22,7 +22,7 @@ public class OrderRequest {
 
     private String address;
 
-    private City city;
+    private String city;
 
     private String phoneNumber;
 

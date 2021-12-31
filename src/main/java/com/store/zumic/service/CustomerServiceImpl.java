@@ -1,7 +1,6 @@
 package com.store.zumic.service;
 
 
-import com.store.zumic.dto.CustomerRegistrationDto;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
 import com.store.zumic.models.City;
 import com.store.zumic.models.Customer;
@@ -9,12 +8,16 @@ import com.store.zumic.models.Role;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.repository.CustomerRepository;
 import com.store.zumic.repository.ServiceProviderRepository;
+import com.store.zumic.repository.AppUserRepository;
+import com.store.zumic.security.authfacade.AuthenticationFacade;
 import com.store.zumic.service.exception.CustomerAlreadyExistException;
 import com.store.zumic.service.exception.CustomerDoesNotExistException;
 import com.store.zumic.service.exception.ServiceProviderNotFoundException;
+import com.store.zumic.models.AppUser;
 import com.store.zumic.utils.ConvertStringToEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +26,11 @@ import java.util.List;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService{
 
-    //@Autowired
-    //BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    AuthenticationFacade authenticationFacade;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     CustomerRepository customerRepository;
@@ -32,27 +38,38 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     ServiceProviderRepository serviceProviderRepository;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
     @Override
-    public void create_account(CustomerRegistrationDto registrationDto) throws CustomerAlreadyExistException {
+    public void create_account(Customer registrationDto) throws CustomerAlreadyExistException {
 
         log.info("Customer registration request ---> {}", registrationDto);
 
-        Customer savedCustomer = customerRepository.findByEmail(registrationDto.getEmail());
+        if(customerRepository.findByEmail(registrationDto.getEmail()) == null){
 
-        if(savedCustomer == null){
-            Customer customer = new Customer();
-            customer.setFirstName(registrationDto.getFirstName());
-            customer.setLastName(registrationDto.getLastName());
-            customer.setEmail(registrationDto.getEmail());
-            customer.setPassword(registrationDto.getPassword());
-            customer.setRole(Role.valueOf("CUSTOMER"));
+            log.info("Customer is not registered ");
 
-            customerRepository.save(customer);
+            AppUser appUser = new AppUser();
+            appUser.setEmail(registrationDto.getEmail());
+            appUser.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+            appUser.addRole(Role.CUSTOMER);
+            appUser.setIsVerified(true);
 
-            log.info("After saving customer details to db --->{}", customer);
+            appUserRepository.save(appUser);
+
+            log.info("App user saved ---> {}", appUser);
+
+            registrationDto.setAppUser(appUser);
+            registrationDto.setPassword(appUser.getPassword());
+
+            log.info("Customer before saving --> {}", registrationDto);
+
+            customerRepository.save(registrationDto);
+
+            log.info("After saving customer details to db --->{}", registrationDto);
 
             //send verification token to email
-
 
         } else {
             throw new CustomerAlreadyExistException("a customer with email "+ registrationDto.getEmail() +" already exist!");
@@ -63,6 +80,16 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void verify_account() {
 
+    }
+
+
+    @Override
+    public Customer getLoggedInUser() {
+
+        String name = authenticationFacade.getAuthentication().getName();
+        log.info("Authentication facade --> {}", name);
+
+        return customerRepository.findByEmail(name);
     }
 
     @Override

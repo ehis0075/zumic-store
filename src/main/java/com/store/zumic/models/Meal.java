@@ -39,8 +39,9 @@ public class Meal implements Serializable {
 //    @JoinColumn(name = "serviceProviderId", nullable = false, updatable = false)
 //    private ServiceProvider serviceProvider;
 
-    @OneToMany
-    private List<CustomerOrder> customerOrders;
+    //remove
+//    @OneToMany
+//    private List<CustomerOrder> customerOrders;
 
     @CreationTimestamp
     private Date dateCreated;
