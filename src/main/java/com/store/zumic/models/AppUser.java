@@ -19,7 +19,7 @@ public class AppUser {
     private Long id;
 
     @NotNull
-    //@Column(unique = true)
+    @Column(unique = true)
     private String email;
 
     @NotNull
@@ -30,7 +30,7 @@ public class AppUser {
     private List<Role> roles;
 
     // for email verification
-    private Boolean isVerified = Boolean.TRUE;
+    private Boolean isVerified;
 
     public void addRole(Role userRole){
 

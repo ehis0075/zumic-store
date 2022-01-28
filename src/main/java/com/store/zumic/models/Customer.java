@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +40,7 @@ public class Customer implements Serializable {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<Role> roles;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -49,8 +51,9 @@ public class Customer implements Serializable {
     @JsonIgnore
     private AppUser appUser;
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     @CreationTimestamp
-    private Date dateCreated;
+    private LocalDate dateCreated;
 
     public void addOrder(CustomerOrder order){
 

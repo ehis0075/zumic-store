@@ -3,6 +3,7 @@ package com.store.zumic.controller;
 
 
 import com.store.zumic.dto.CustomerRegistrationDto;
+import com.store.zumic.dto.OrderRequest;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
 import com.store.zumic.models.Customer;
 import com.store.zumic.models.ServiceProvider;
@@ -12,10 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -37,7 +40,7 @@ public class CustomerController {
         return ResponseEntity.ok().body("registration successful");
     }
 
-    @GetMapping("/auth/login")
+    @GetMapping("/get-logged-in-customer")
     public ResponseEntity<Customer> getLoggedInUser(){
 
         log.info("Get logged in user called");
@@ -76,18 +79,32 @@ public class CustomerController {
         //return ResponseEntity.ok().body("done.");
     }
 
-//    @PostMapping("/task/{liftId}")
-//    public ResponseEntity<?> addTask(@RequestBody @NotNull TaskDto taskDto, @PathVariable Long liftId){
-//
-//        log.info("adding task request --> {}", taskDto);
-//        try {
-//            advertiserService.addTask(taskDto, liftId);
-//        }catch (ResourceNotFoundException ex){
-//            return ResponseEntity.badRequest().body("lift subscription with id"+ liftId +"does not exist!");
-//        }
-//        return ResponseEntity.ok().body("new task successfully added.");
-//    }
+    @GetMapping("/get-All-Customers-ByDate")
+    ResponseEntity<?> getAllCustomers(@RequestParam(value = "date", required = true) @NotNull String date) throws MissingServletRequestParameterException {
 
+        List<Customer> customers;
+        log.info("request to get All customers by date = {}", date);
+
+        try {
+            customers = customerService.findAllCustomerByDate(date);
+        } catch (ParseException e){
+            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
+        } catch(MissingServletRequestParameterException ez){
+            return ResponseEntity.badRequest().body(ez.getLocalizedMessage());
+        }
+        return ResponseEntity.ok().body(customers);
+    }
+
+    @PostMapping("/place-order")
+    ResponseEntity<?> placeOrder(@RequestBody OrderRequest orderRequest) {
+
+        try {
+            customerService.placeOrder(orderRequest);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return ResponseEntity.ok().body("order successfully created");
+    }
 
 
 }

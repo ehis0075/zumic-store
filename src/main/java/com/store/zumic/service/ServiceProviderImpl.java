@@ -2,16 +2,13 @@ package com.store.zumic.service;
 
 
 import com.store.zumic.dto.AddMealRequest;
-import com.store.zumic.models.Meal;
-import com.store.zumic.models.Role;
-import com.store.zumic.models.ServiceProvider;
+import com.store.zumic.models.*;
 import com.store.zumic.repository.MealRepository;
 import com.store.zumic.repository.ServiceProviderRepository;
 import com.store.zumic.repository.AppUserRepository;
 import com.store.zumic.security.authfacade.AuthenticationFacade;
 import com.store.zumic.service.exception.MealAlreadyExistException;
 import com.store.zumic.service.exception.ServiceProviderAlreadyExistException;
-import com.store.zumic.models.AppUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -71,16 +68,28 @@ public class ServiceProviderImpl implements ServiceProviderService {
 
     }
 
+    @Override
+    public ServiceProvider getLoggedInUser() {
+
+        String name = authenticationFacade.getAuthentication().getName();
+        log.info("Authentication facade --> {}", name);
+
+        return serviceProviderRepository.findByEmail(name);
+    }
+
 
     @Override
     public void addFood(AddMealRequest addMealRequest) {
 
-        log.info("add food request --> {}, {}", addMealRequest);
+        log.info("add food request ------> {}", addMealRequest);
 
-        ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getServiceProviderName());
-        log.info("service provider from db ----->{}", serviceProvider);
+        //ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getServiceProviderName());
+        ServiceProvider serviceProvider = getLoggedInUser();
+        log.info("logged-in service provider ------->{}", serviceProvider);
 
-        if(serviceProvider != null){
+        Meal meal = mealRepository.findByName(addMealRequest.getName());
+
+        if(meal == null){
 
             Meal meal1 = new Meal();
             meal1.setDescription(addMealRequest.getDescription());
@@ -90,7 +99,7 @@ public class ServiceProviderImpl implements ServiceProviderService {
 
             mealRepository.save(meal1);
 
-            log.info("saved meal --> {}", meal1);
+            log.info("after saving meal to db --> {}", meal1);
 
             //map the new created new to a service provider in the db
             serviceProvider.addMeal(meal1);

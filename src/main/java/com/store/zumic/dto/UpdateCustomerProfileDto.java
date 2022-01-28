@@ -13,5 +13,4 @@ public class UpdateCustomerProfileDto {
 
     private String lastName;
 
-    private String email;
 }

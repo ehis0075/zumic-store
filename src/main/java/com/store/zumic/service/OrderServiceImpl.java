@@ -36,19 +36,25 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    CustomerService customerService;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
 
-        log.info("Order request--> {} "+ orderRequest);
+        log.info("Order request-----> {} "+ orderRequest);
 
         Meal meal = mealRepository.findByName(orderRequest.getMeal());
 
-        String loggedInUserEmail = authenticationFacade.getAuthentication().getName();
+        //String loggedInUserEmail = authenticationFacade.getAuthentication().getName();
 
-        Customer savedCustomer = customerRepository.findByEmail(loggedInUserEmail);
+        //Customer savedCustomer = customerRepository.findByEmail(loggedInUserEmail);
+        Customer savedCustomer = customerService.getLoggedInUser();
+
+        log.info("logged-in customer making this order ------>"+ savedCustomer);
 
         ServiceProvider serviceProvider = serviceProviderRepository.findByName(orderRequest.getServiceProviderName());
+        //ServiceProvider serviceProvider = customerService.getLoggedInUser();
 
         City enumCity = ConvertStringToEnum.convertStringToEnum(orderRequest.getCity());
 
@@ -58,18 +64,20 @@ public class OrderServiceImpl implements OrderService{
 
             CustomerOrder order = new CustomerOrder();
             order.setPhoneNumber(orderRequest.getPhoneNumber());
-            order.setServiceProvider(serviceProvider);
+            order.setServiceProvider(orderRequest.getServiceProviderName());
             order.setAddress(orderRequest.getAddress());
             order.setCity(enumCity);
 
-            List<Meal> meals = new ArrayList<>();
-            meals.add(meal);
-
             orderRepository.save(order);
+
+            //List<Meal> meals = new ArrayList<>();
+
+            //meals.add(meal);
+
 
             savedCustomer.addOrder(order);
 
-            log.info("After saving to database --> {}", order);
+            log.info("After saving order to database --> {}", order);
         } else {
             throw new ServiceProviderNotFoundException("service provider " +orderRequest.getServiceProviderName()
                     + " does not exist in " + serviceProvider.getCity());

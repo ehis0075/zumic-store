@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,14 +35,18 @@ public class CustomerOrder implements Serializable {
     @Column(unique = true)
     private String phoneNumber;
 
+    private String serviceProvider;
+
+    private String meal;
+
     //remove
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "meal_id", referencedColumnName = "id")
 //    private List<Meal> meals;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "serviceProvider_id", referencedColumnName = "id")
-    private ServiceProvider serviceProvider;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "serviceProvider_id", referencedColumnName = "id")
+//    private ServiceProvider serviceProvider;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    //@JoinColumn(name = "customer_id", referencedColumnName = "id")
@@ -49,7 +54,7 @@ public class CustomerOrder implements Serializable {
 
     @JsonFormat(pattern="dd/MM/yyyy")
     @CreationTimestamp
-    private Date dateCreated;
+    private LocalDate dateCreated;
 
 //    public void addMeal(Meal meal){
 //        if(listOfMeals == null){

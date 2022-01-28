@@ -6,5 +6,4 @@ public interface OrderService {
 
     void placeOrder(OrderRequest orderRequest);
 
-
 }

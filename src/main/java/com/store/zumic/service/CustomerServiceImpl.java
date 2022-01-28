@@ -1,25 +1,23 @@
 package com.store.zumic.service;
 
 
+import com.store.zumic.dto.AddMealRequest;
+import com.store.zumic.dto.OrderRequest;
 import com.store.zumic.dto.UpdateCustomerProfileDto;
-import com.store.zumic.models.City;
-import com.store.zumic.models.Customer;
-import com.store.zumic.models.Role;
-import com.store.zumic.models.ServiceProvider;
-import com.store.zumic.repository.CustomerRepository;
-import com.store.zumic.repository.ServiceProviderRepository;
-import com.store.zumic.repository.AppUserRepository;
+import com.store.zumic.models.*;
+import com.store.zumic.repository.*;
 import com.store.zumic.security.authfacade.AuthenticationFacade;
-import com.store.zumic.service.exception.CustomerAlreadyExistException;
-import com.store.zumic.service.exception.CustomerDoesNotExistException;
-import com.store.zumic.service.exception.ServiceProviderNotFoundException;
-import com.store.zumic.models.AppUser;
+import com.store.zumic.service.exception.*;
 import com.store.zumic.utils.ConvertStringToEnum;
+import com.store.zumic.utils.DateConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,6 +38,12 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
     AppUserRepository appUserRepository;
+
+    @Autowired
+    MealRepository mealRepository;
+
+    @Autowired
+    CustomerOrderRepository customerOrderRepository;
 
     @Override
     public void create_account(Customer registrationDto) throws CustomerAlreadyExistException {
@@ -97,7 +101,8 @@ public class CustomerServiceImpl implements CustomerService{
 
         log.info("update customer profile request --------> {}", updateCustomerProfileDto);
 
-        Customer savedCustomer = customerRepository.findByEmail(updateCustomerProfileDto.getEmail());
+       // Customer savedCustomer = customerRepository.findByEmail(updateCustomerProfileDto.getEmail());
+        Customer savedCustomer = getLoggedInUser();
 
         if(savedCustomer != null){
             savedCustomer.setFirstName(updateCustomerProfileDto.getFirstName());
@@ -108,7 +113,7 @@ public class CustomerServiceImpl implements CustomerService{
         } else {
 
             //authentication exception
-            throw new CustomerDoesNotExistException("customer with email "+ updateCustomerProfileDto.getEmail() +" does not exist");
+            throw new CustomerDoesNotExistException("customer with email "+ savedCustomer.getEmail() +" does not exist");
         }
 
     }
@@ -136,5 +141,56 @@ public class CustomerServiceImpl implements CustomerService{
           throw new ServiceProviderNotFoundException("No service provider found in "+ city);
         }
 //        return serviceProviderList;
+    }
+
+    @Override
+    public List<Customer> findAllCustomerByDate(String date) throws ServiceProviderNotFoundException, ParseException, MissingServletRequestParameterException {
+
+        LocalDate newDate = DateConverter.StringToDateConverter(date);
+
+        List<Customer> customers = customerRepository.findByDateCreated(newDate);
+
+        log.info("all customers found ----> {}", customers);
+
+        if(customers == null) {
+            throw new ResourceNotFoundException("There was no customer created on "+ date);
+        } else if(date == null){
+            throw new MissingServletRequestParameterException("ok", "ok");
+        }
+        return customers;
+    }
+
+    @Override
+    public void placeOrder(OrderRequest orderRequest) {
+
+        log.info("before saving customer order ----->"+ orderRequest);
+
+        ServiceProvider serviceProvider = serviceProviderRepository.findByName(orderRequest.getServiceProviderName());
+
+        Meal meal = mealRepository.findByName(orderRequest.getMeal());
+
+        City city = ConvertStringToEnum.convertStringToEnum(orderRequest.getCity());
+
+        if(serviceProvider != null){
+            if(meal != null){
+
+                CustomerOrder customerOrder = new CustomerOrder();
+                customerOrder.setMeal(orderRequest.getMeal());
+                customerOrder.setServiceProvider(orderRequest.getServiceProviderName());
+                customerOrder.setAddress(orderRequest.getAddress());
+                customerOrder.setPhoneNumber(orderRequest.getPhoneNumber());
+                customerOrder.setCity(city);
+
+                customerOrderRepository.save(customerOrder);
+
+                log.info("after saving customer order ----->"+ customerOrder);
+
+            } else {
+                throw new MealNotFoundException("No meal found "+ orderRequest.getMeal());
+            }
+        }else {
+            throw new ServiceProviderNotFoundException("No service provider found in "+ orderRequest.getCity());
+        }
+
     }
 }

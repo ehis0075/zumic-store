@@ -2,9 +2,10 @@ This is a web application that allows customers place order from their fav resta
 
  API
 what a service provider can do: 
-- create account
-- login
-- add meal
+- create account   (working)
+- login   (working)
+- add meal   (working)
+
 
 - verify customer
 - update profile
@@ -13,13 +14,17 @@ what a service provider can do:
 - send push notifications to all my customers
 - get all customers info that has ordered from me
 
-what a customer can do on the platform:
-- create account
-- login
-- update profile
-- find all the service providers in a city
-- place order *
+--------------------------------------------------------------------------------
 
+what a customer can do on the platform:
+- create account (working)
+- login  (working)
+- update profile  (working)
+- find all the service providers in a city  (working)
+- place order (working)
+
+
+- find customer by date (not working)
 - verify customer
 - pay with paystack 
 

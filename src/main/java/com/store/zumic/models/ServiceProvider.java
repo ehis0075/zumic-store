@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.zumic.utils.CityJpaConverter;
 import com.sun.istack.NotNull;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +64,8 @@ public class ServiceProvider implements Serializable {
         listOfMeals.add(meal);
     }
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     @CreationTimestamp
-    private Date dateCreated;
+    private LocalDate dateCreated;
 
 }
