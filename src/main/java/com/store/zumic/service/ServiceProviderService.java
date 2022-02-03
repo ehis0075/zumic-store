@@ -2,6 +2,8 @@ package com.store.zumic.service;
 
 
 import com.store.zumic.dto.AddMealRequest;
+import com.store.zumic.dto.UpdateMealRequest;
+import com.store.zumic.dto.UpdateServiceProviderProfileDto;
 import com.store.zumic.models.Customer;
 import com.store.zumic.models.ServiceProvider;
 import com.store.zumic.service.exception.ServiceProviderAlreadyExistException;
@@ -15,9 +17,11 @@ public interface ServiceProviderService {
 
     public ServiceProvider getLoggedInUser();
 
-    //edit service provider profile
+    void updateProfile(UpdateServiceProviderProfileDto updateCustomerProfileDto);
 
-    //edit a meal
+    void deleteMeal(String mealName);
+
+    void editMeal(UpdateMealRequest updateMealRequest);
 
     //delete a meal
 

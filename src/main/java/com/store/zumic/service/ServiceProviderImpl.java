@@ -2,13 +2,15 @@ package com.store.zumic.service;
 
 
 import com.store.zumic.dto.AddMealRequest;
+import com.store.zumic.dto.UpdateMealRequest;
+import com.store.zumic.dto.UpdateServiceProviderProfileDto;
 import com.store.zumic.models.*;
 import com.store.zumic.repository.MealRepository;
 import com.store.zumic.repository.ServiceProviderRepository;
 import com.store.zumic.repository.AppUserRepository;
 import com.store.zumic.security.authfacade.AuthenticationFacade;
-import com.store.zumic.service.exception.MealAlreadyExistException;
-import com.store.zumic.service.exception.ServiceProviderAlreadyExistException;
+import com.store.zumic.service.exception.*;
+import com.store.zumic.utils.ConvertStringToEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -77,13 +79,74 @@ public class ServiceProviderImpl implements ServiceProviderService {
         return serviceProviderRepository.findByEmail(name);
     }
 
+    @Override
+    public void updateProfile(UpdateServiceProviderProfileDto updateServiceProviderProfileDto) {
+
+        log.info("update service profile request --------> {}", updateServiceProviderProfileDto);
+
+        ServiceProvider savedServiceProvider = getLoggedInUser();
+
+        City city = ConvertStringToEnum.convertStringToEnum(updateServiceProviderProfileDto.getCity());
+
+        if(savedServiceProvider != null){
+            savedServiceProvider.setName(updateServiceProviderProfileDto.getName());
+            savedServiceProvider.setCity(city);
+            savedServiceProvider.setAddress(updateServiceProviderProfileDto.getAddress());
+            savedServiceProvider.setPhoneNumber(updateServiceProviderProfileDto.getPhoneNumber());
+
+            serviceProviderRepository.save(savedServiceProvider);
+            log.info("after updating service provider profile ------> {}", savedServiceProvider);
+        } else {
+            throw new ServiceProviderNotFoundException("service provider with name "+ savedServiceProvider.getName() +" does not exist");
+        }
+    }
+
+    @Override
+    public void deleteMeal(String mealName) {
+
+        log.info("Request to delete "+ mealName);
+
+        Meal savedMeal = mealRepository.findByName(mealName);
+
+        if(savedMeal != null){
+            mealRepository.delete(savedMeal);
+
+            log.info("meal successfully deleted!!!");
+
+        } else {
+            throw new MealNotFoundException("meal "+ mealName +" cannot be found in db ");
+        }
+
+    }
+
+    @Override
+    public void editMeal(UpdateMealRequest updateMealRequest) {
+
+        log.info("Request to edit "+ updateMealRequest.getSavedMeal());
+
+        Meal savedMeal = mealRepository.findByName(updateMealRequest.getSavedMeal());
+
+        if(savedMeal != null){
+            savedMeal.setName(updateMealRequest.getName());
+            savedMeal.setPrice(updateMealRequest.getPrice());
+            savedMeal.setDescription(updateMealRequest.getDescription());
+            savedMeal.setPreparationTime(updateMealRequest.getPreparationTime());
+
+            mealRepository.save(savedMeal);
+
+            log.info("after updating meal ---->"+ savedMeal);
+
+        } else {
+            throw new MealNotFoundException("meal "+ updateMealRequest.getSavedMeal() +" cannot be found in db ");
+        }
+    }
+
 
     @Override
     public void addFood(AddMealRequest addMealRequest) {
 
         log.info("add food request ------> {}", addMealRequest);
 
-        //ServiceProvider serviceProvider = serviceProviderRepository.findByName(addMealRequest.getServiceProviderName());
         ServiceProvider serviceProvider = getLoggedInUser();
         log.info("logged-in service provider ------->{}", serviceProvider);
 
@@ -101,7 +164,6 @@ public class ServiceProviderImpl implements ServiceProviderService {
 
             log.info("after saving meal to db --> {}", meal1);
 
-            //map the new created new to a service provider in the db
             serviceProvider.addMeal(meal1);
 
            // serviceProviderRepository.save()

@@ -69,28 +69,21 @@ public class CustomerController {
         try {
             serviceProviderList = customerService.findAllServiceProvidersByCity(city);
         } catch (IllegalArgumentException e)  {
-           // return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No service provider found in "+ city);
         }
-//        }catch (Exception e) {
-//                return ResponseEntity.badRequest().body(e.getLocalizedMessage());
-//            }
         return ResponseEntity.ok().body(serviceProviderList);
-        //return ResponseEntity.ok().body("done.");
     }
 
-    @GetMapping("/get-All-Customers-ByDate")
-    ResponseEntity<?> getAllCustomers(@RequestParam(value = "date", required = true) @NotNull String date) throws MissingServletRequestParameterException {
+    @GetMapping("/get-All-Customers-ByDate/{date}")
+    ResponseEntity<?> getAllCustomersByDate(@PathVariable @NotNull String date) {
 
         List<Customer> customers;
-        log.info("request to get All customers by date = {}", date);
+        log.info("request to get All customers by date "+ date);
 
         try {
             customers = customerService.findAllCustomerByDate(date);
-        } catch (ParseException e){
-            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
-        } catch(MissingServletRequestParameterException ez){
-            return ResponseEntity.badRequest().body(ez.getLocalizedMessage());
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No customer was created on "+ date);
         }
         return ResponseEntity.ok().body(customers);
     }

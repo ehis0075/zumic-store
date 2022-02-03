@@ -53,6 +53,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/customer/registration").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/serviceProvider/create_account").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/staff/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(jwtAuthenticationFilter())

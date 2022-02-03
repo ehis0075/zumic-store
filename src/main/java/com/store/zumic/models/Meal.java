@@ -35,17 +35,7 @@ public class Meal implements Serializable {
 
     private String description;
 
-    //add category: breakfast, lunch, dinner
-
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "serviceProviderId", nullable = false, updatable = false)
-//    private ServiceProvider serviceProvider;
-
-    //remove
-//    @OneToMany
-//    private List<CustomerOrder> customerOrders;
-
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="dd-MM-yyyy")
     @CreationTimestamp
     private LocalDate dateCreated;
 

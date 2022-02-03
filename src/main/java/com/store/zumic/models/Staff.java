@@ -1,5 +1,6 @@
 package com.store.zumic.models;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -12,7 +13,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Customer implements Serializable {
+public class Staff implements Serializable {
 
     private static final long serialVersionUID = 23444536367737L;
 
@@ -43,9 +43,6 @@ public class Customer implements Serializable {
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Role> roles;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<CustomerOrder> listOfOrders;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     @JsonIgnore
@@ -55,14 +52,6 @@ public class Customer implements Serializable {
     @CreationTimestamp
     private LocalDate dateCreated;
 
-    public void addOrder(CustomerOrder order){
-
-        if (listOfOrders == null){
-            this.listOfOrders = new ArrayList<>();
-        }
-        this.listOfOrders.add(order);
-    }
-
     public void addRole(Role userRole){
 
         if (roles == null){
@@ -71,3 +60,4 @@ public class Customer implements Serializable {
         this.roles.add(userRole);
     }
 }
+

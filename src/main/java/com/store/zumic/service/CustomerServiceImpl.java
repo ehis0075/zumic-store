@@ -144,18 +144,16 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<Customer> findAllCustomerByDate(String date) throws ServiceProviderNotFoundException, ParseException, MissingServletRequestParameterException {
+    public List<Customer> findAllCustomerByDate(String date) throws ResourceNotFoundException, ParseException {
 
         LocalDate newDate = DateConverter.StringToDateConverter(date);
 
         List<Customer> customers = customerRepository.findByDateCreated(newDate);
 
-        log.info("all customers found ----> {}", customers);
+        log.info("list of all customers created on "+date +"  ----> {}", customers);
 
         if(customers == null) {
             throw new ResourceNotFoundException("There was no customer created on "+ date);
-        } else if(date == null){
-            throw new MissingServletRequestParameterException("ok", "ok");
         }
         return customers;
     }

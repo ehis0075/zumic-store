@@ -1,18 +1,22 @@
 This is a web application that allows customers place order from their fav restaurant 
 
- API
+-create cart table: a customer can add meal to cart, when done can procede to view all items in the cart
+
 what a service provider can do: 
 - create account   (working)
 - login   (working)
 - add meal   (working)
+- update profile (working)
+- delete a meal  (working)
+- edit a meal  (working)
 
 
-- verify customer
-- update profile
-- delete a meal
-- edit a meal
-- send push notifications to all my customers
+- add order to cart (not working)
+- view all orders (not done yet)
 - get all customers info that has ordered from me
+- verify service provider
+- send push notifications to all my customers
+
 
 --------------------------------------------------------------------------------
 
@@ -22,17 +26,27 @@ what a customer can do on the platform:
 - update profile  (working)
 - find all the service providers in a city  (working)
 - place order (working)
+- find customer by date (working)
 
 
-- find customer by date (not working)
+- add order to cart (not working)
+- view all orders (not done yet)
 - verify customer
 - pay with paystack 
+
+
+what a staff can do on the platform
+- registration
+- login
+- list all customers on the platform
+
+- update profile
+- list all service providers on the platform
 
 
 
 to do
 - service provider can be in diff cities
-- find all service providers in a city, you are passing a string
 - add a type of food created by service provider
 - add a order status
 - create a cart class, add order to cart 

@@ -5,19 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddMealRequest {
+public class UpdateServiceProviderProfileDto {
 
     private String name;
 
-    private Double price;
+    private String email;
 
-    private String preparationTime;
+    private String address;
 
-    private String description;
+    private String phoneNumber;
 
-    //private String serviceProviderName;
-
+    private String city;
 }

@@ -37,6 +37,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 
+    //where we parse the user credentials and issue them to the auth mgr
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
@@ -59,6 +60,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
 
+    //the method called when a user successfully logs in and it generates a jwt for this user/
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
